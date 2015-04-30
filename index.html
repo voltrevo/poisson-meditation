@@ -57,6 +57,7 @@
           var text = button.firstChild.innerHTML;
 
           var targetTime = {
+            '0':        0,
             '1s':     1000,
             '5s':     5000,
             '2m':   120000,
@@ -64,6 +65,14 @@
             '20m': 1200000,
             '1h':  3600000
           }[text];
+
+          if (targetTime === 0) {
+            button.addEventListener('click', function() {
+              bellSound.play();
+            });
+
+            return;
+          }
 
           button.addEventListener('click', function() {
             var id = null;
@@ -118,8 +127,8 @@
 
       #startTimerButtons > div > div {
         display: inline-block;
-        height: 12vw;
-        width: 12vw;
+        height: 10vw;
+        width: 10vw;
         border-radius: 50%;
         background-color: #8cf;
         border: 1px solid black;
@@ -145,6 +154,7 @@
     <audio id='bellSound' src='173000__keykrusher__bicycle-bell-2.mp3'></audio>
 
     <div id='startTimerButtons'>
+      <div><div><div>0</div></div></div>
       <div><div><div>1s</div></div></div>
       <div><div><div>5s</div></div></div>
       <div><div><div>2m</div></div></div>

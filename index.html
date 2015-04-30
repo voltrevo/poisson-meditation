@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Poisson Meditation</title>
+
+    <script>
+
+      'use strict';
+
+      var setPoissonTimeout = function(callback, ms) {
+        var samplingInterval = (ms < 60000 ? 50 : 1000);
+        var p = samplingInterval / ms;
+
+        var start = new Date();
+
+        var lowest = 1;
+
+        var intervalId = setInterval(function() {
+          var rand = Math.random();
+
+          if (rand < lowest) {
+            lowest = rand;
+            var progress = p / lowest;
+            var now = new Date();
+
+            console.log(
+              'watermark: ' + Math.floor(progress * ms) + ', ' +
+              'actual: ' + Math.floor(now - start)
+            );
+          }
+
+          if (lowest < p) {
+            callback();
+            clearInterval(intervalId);
+          }
+        }, samplingInterval);
+
+        return intervalId;
+      };
+
+      var clearPoissonTimeout = function(id) {
+        clearInterval(id);
+      };
+
+      window.addEventListener('load', function() {
+
+        var bellSound = document.getElementById('bellSound');
+
+        var buttonArray = Array.prototype.slice.apply(
+          document.getElementById('startTimerButtons').children
+        );
+
+        buttonArray.forEach(function(buttonWrapper) {
+
+          var button = buttonWrapper.firstChild;
+
+          var text = button.firstChild.innerHTML;
+
+          var targetTime = {
+            '1s':     1000,
+            '5s':     5000,
+            '2m':   120000,
+            '5m':   300000,
+            '20m': 1200000,
+            '1h':  3600000
+          }[text];
+
+          button.addEventListener('click', function() {
+            var id = null;
+
+            return function() {
+              if (!id) {
+                button.setAttribute('class', 'buttonActive');
+                id = setPoissonTimeout(function() {
+                  id = null;
+                  button.setAttribute('class', '');
+                  bellSound.play();
+                }, targetTime);
+              }
+              else {
+                clearPoissonTimeout(id);
+                id = null;
+                button.setAttribute('class', '');
+              }
+            };
+          }());
+
+        });
+
+      });
+
+    </script>
+
+    <style>
+
+      body {
+        background-color: #eee;
+        font-family: arial;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      #startTimerButtons {
+        display: table;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      #startTimerButtons > div {
+        display: inline-block;
+        padding: 5px;
+      }
+
+      #startTimerButtons > div > div {
+        display: inline-block;
+        height: 12vw;
+        width: 12vw;
+        border-radius: 50%;
+        background-color: #8cf;
+        border: 1px solid black;
+      }
+
+      #startTimerButtons > div > div.buttonActive {
+        background-color: #7be;
+      }
+
+      #startTimerButtons > div > div > div {
+        padding-top: 50%;
+        line-height: 1;
+        text-align: center;
+        width: 100%;
+        margin-top: -0.5em;
+      }
+
+    </style>
+
+  </head>
+  <body>
+    <audio id='bellSound' src='173000__keykrusher__bicycle-bell-2.mp3'></audio>
+
+    <div id='startTimerButtons'>
+      <div><div><div>1s</div></div></div>
+      <div><div><div>5s</div></div></div>
+      <div><div><div>2m</div></div></div>
+      <div><div><div>5m</div></div></div>
+      <div><div><div>20m</div></div></div>
+      <div><div><div>1h</div></div></div>
+    </div>
+  </body>
+</html>

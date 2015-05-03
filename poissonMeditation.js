@@ -69,7 +69,13 @@
 
   window.addEventListener('load', function() {
 
-    var bellElement = document.getElementById('bellSound')
+    var bellElement = document.createElement('audio')
+
+    // Sound author: KeyKrusher from freesound.org
+    // https://www.freesound.org/people/KeyKrusher/sounds/173000/
+    bellElement.src = '173000__keykrusher__bicycle-bell-2.mp3'
+
+    document.body.appendChild(bellElement)
 
     var bell = function() {
       bellElement.pause()
@@ -77,17 +83,9 @@
       bellElement.play()
     }
 
-    /*var buttonArray = Array.prototype.slice.apply(
-      document.getElementById('startTimerButtons').children
-    )
-
-    buttonArray.forEach(function(buttonWrapper) {*/
-
-    var startTimerButtons = document.getElementById('startTimerButtons')
-
     durations.forEach(function(duration) {
       var button = createTimerButton(duration)
-      startTimerButtons.appendChild(button)
+      document.body.appendChild(button)
 
       var targetTime = durationStringToMillis(duration)
 

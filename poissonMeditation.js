@@ -3,12 +3,17 @@
 ;(function() {
   var durations = ['0', '1s', '5s', '2m', '5m', '20m', '1h']
 
-  var createTimerButton = function(duration) {
+  var createTimerButton = function(opt) {
     var button = document.createElement('div')
     button.setAttribute('class', 'timerButton')
+    button.style.position = 'absolute'
+    button.style.left = opt.x - opt.r + 'px'
+    button.style.top = opt.y - opt.r + 'px'
+    button.style.width = 2 * opt.r + 'px'
+    button.style.height = 2 * opt.r + 'px'
 
     var innerDiv = document.createElement('div')
-    innerDiv.innerHTML = duration
+    innerDiv.innerHTML = opt.duration
 
     button.appendChild(innerDiv)
 
@@ -67,7 +72,44 @@
     return n * suffixMultiplier
   }
 
-  window.addEventListener('load', function() {
+  var buildPage = function() {
+    document.body.innerHTML = ''
+
+    var buttonOpts = (function(){
+      var center = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2
+      }
+
+      var pageRadius = Math.min(window.innerHeight, window.innerWidth) / 2
+      var margin = 0.1 * pageRadius
+
+      var regionRadius = (pageRadius - 2 * margin) / (1 + Math.sqrt(3))
+
+      var posGen = function(x, y) {
+        return {
+          x: center.x + regionRadius * x,
+          y: center.y - regionRadius * y,
+          r: 0.7 * regionRadius
+        }
+      }
+
+      var rt3 = Math.sqrt(3)
+
+      return [
+        posGen(-1,  rt3),
+        posGen( 1,  rt3),
+        posGen(-2,    0),
+        posGen( 0,    0),
+        posGen( 2,    0),
+        posGen(-1, -rt3),
+        posGen( 1, -rt3)
+      ]
+    })()
+
+    buttonOpts.forEach(function(opt, i) {
+      opt.duration = durations[i] || '0'
+    })
 
     var bellElement = document.createElement('audio')
 
@@ -83,11 +125,12 @@
       bellElement.play()
     }
 
-    durations.forEach(function(duration) {
-      var button = createTimerButton(duration)
+    buttonOpts.forEach(function(buttonOpt) {
+      var button = createTimerButton(buttonOpt)
+
       document.body.appendChild(button)
 
-      var targetTime = durationStringToMillis(duration)
+      var targetTime = durationStringToMillis(buttonOpt.duration)
 
       if (targetTime === 0) {
         button.addEventListener('click', bell)
@@ -115,5 +158,23 @@
       }())
 
     })
-  })
+  }
+
+  var limitCallsViaDelay = function(fn, ms) {
+    var timerId = null
+
+    return function() {
+      if (timerId) {
+        clearTimeout(timerId)
+      }
+
+      timerId = setTimeout(function() {
+        timerId = null
+        fn()
+      }, ms)
+    }
+  }
+
+  window.addEventListener('load', buildPage)
+  window.addEventListener('resize', limitCallsViaDelay(buildPage, 250))
 })()

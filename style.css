@@ -8,6 +8,8 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  margin: 0;
 }
 
 .timerButton {
@@ -33,4 +35,18 @@ body {
   text-align: center;
   width: 100%;
   margin-top: -0.5em;
+}
+
+#header, #footer {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: #777;
+  color: white;
+  padding: 0.3em;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
 }

@@ -73,7 +73,8 @@
   }
 
   var buildPage = function() {
-    document.body.innerHTML = ''
+    var container = document.getElementById('buttonContainer')
+    container.innerHTML = ''
 
     var buttonOpts = (function(){
       var center = {
@@ -117,7 +118,7 @@
     // https://www.freesound.org/people/KeyKrusher/sounds/173000/
     bellElement.src = '173000__keykrusher__bicycle-bell-2.mp3'
 
-    document.body.appendChild(bellElement)
+    container.appendChild(bellElement)
 
     var bell = function() {
       bellElement.pause()
@@ -128,7 +129,7 @@
     buttonOpts.forEach(function(buttonOpt) {
       var button = createTimerButton(buttonOpt)
 
-      document.body.appendChild(button)
+      container.appendChild(button)
 
       var targetTime = durationStringToMillis(buttonOpt.duration)
 

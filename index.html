@@ -4,74 +4,12 @@
     <title>Poisson Meditation</title>
 
     <script src='poissonMeditation.js'></script>
-
-    <style>
-
-      body {
-        background-color: #eee;
-        font-family: arial;
-
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      #startTimerButtons {
-        display: table;
-        margin: 0 auto;
-        text-align: center;
-      }
-
-      #startTimerButtons > div {
-        display: inline-block;
-        padding: 5px;
-      }
-
-      #startTimerButtons > div > div {
-        display: inline-block;
-        height: 10vw;
-        width: 10vw;
-        border-radius: 50%;
-        background-color: #8cf;
-        border: 1px solid black;
-        transition: background-color 0.3s, color 0.3s;
-      }
-
-      #startTimerButtons > div > div:hover {
-        cursor: pointer;
-      }
-
-      #startTimerButtons > div > div.buttonActive {
-        background-color: #37a;
-        color: white;
-      }
-
-      #startTimerButtons > div > div > div {
-        padding-top: 50%;
-        line-height: 1;
-        text-align: center;
-        width: 100%;
-        margin-top: -0.5em;
-      }
-
-    </style>
+    <link rel='stylesheet' type='text/css' href='style.css'/>
 
   </head>
   <body>
     <!-- Sound author: KeyKrusher from freesound.org https://www.freesound.org/people/KeyKrusher/sounds/173000/ -->
     <audio id='bellSound' src='173000__keykrusher__bicycle-bell-2.mp3'></audio>
-
-    <div id='startTimerButtons'>
-      <div><div><div>0</div></div></div>
-      <div><div><div>1s</div></div></div>
-      <div><div><div>5s</div></div></div>
-      <div><div><div>2m</div></div></div>
-      <div><div><div>5m</div></div></div>
-      <div><div><div>20m</div></div></div>
-      <div><div><div>1h</div></div></div>
-    </div>
+    <div id='startTimerButtons'></div>
   </body>
 </html>

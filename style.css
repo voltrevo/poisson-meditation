@@ -1,0 +1,38 @@
+body {
+  background-color: #eee;
+  font-family: arial;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.timerButton {
+  display: inline-block;
+  height: 10vw;
+  width: 10vw;
+  border-radius: 50%;
+  background-color: #8cf;
+  border: 1px solid black;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.timerButton:hover {
+  cursor: pointer;
+}
+
+.timerButton.timerActive {
+  background-color: #37a;
+  color: white;
+}
+
+.timerButton > div {
+  padding-top: 50%;
+  line-height: 1;
+  text-align: center;
+  width: 100%;
+  margin-top: -0.5em;
+}

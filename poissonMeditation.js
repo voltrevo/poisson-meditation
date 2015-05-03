@@ -1,6 +1,20 @@
 'use strict'
 
 ;(function() {
+  var durations = ['0', '1s', '5s', '2m', '5m', '20m', '1h']
+
+  var createTimerButton = function(duration) {
+    var button = document.createElement('div')
+    button.setAttribute('class', 'timerButton')
+
+    var innerDiv = document.createElement('div')
+    innerDiv.innerHTML = duration
+
+    button.appendChild(innerDiv)
+
+    return button
+  }
+
   var setPoissonTimeout = function(callback, ms) {
     var samplingInterval = (ms < 60000 ? 50 : 1000)
     var p = samplingInterval / ms
@@ -63,17 +77,19 @@
       bellElement.play()
     }
 
-    var buttonArray = Array.prototype.slice.apply(
+    /*var buttonArray = Array.prototype.slice.apply(
       document.getElementById('startTimerButtons').children
     )
 
-    buttonArray.forEach(function(buttonWrapper) {
+    buttonArray.forEach(function(buttonWrapper) {*/
 
-      var button = buttonWrapper.firstChild
+    var startTimerButtons = document.getElementById('startTimerButtons')
 
-      var text = button.firstChild.innerHTML
+    durations.forEach(function(duration) {
+      var button = createTimerButton(duration)
+      startTimerButtons.appendChild(button)
 
-      var targetTime = durationStringToMillis(text)
+      var targetTime = durationStringToMillis(duration)
 
       if (targetTime === 0) {
         button.addEventListener('click', bell)
@@ -85,17 +101,17 @@
 
         return function() {
           if (!id) {
-            button.setAttribute('class', 'buttonActive')
+            button.setAttribute('class', 'timerButton timerActive')
             id = setPoissonTimeout(function() {
               id = null
-              button.setAttribute('class', '')
+              button.setAttribute('class', 'timerButton')
               bell()
             }, targetTime)
           }
           else {
             clearPoissonTimeout(id)
             id = null
-            button.setAttribute('class', '')
+            button.setAttribute('class', 'timerButton')
           }
         }
       }())
